@@ -97,3 +97,12 @@ h1{
     padding-top: 2rem;
 }
 
+.btnCus{
+    border-radius: 15px;
+    background-color: black;
+    color: rgb(230, 220, 74);
+    width: 4rem;
+    height: 2rem;
+    cursor: pointer;
+    margin-top: 5rem;
+}

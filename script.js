@@ -1,134 +1,67 @@
-
-let verdura = ["Zucchine", "Peperoni", "Pomodori", "Porri", "Catalonia", "Cipolle", "Spinaci", "Cappuccio", "Insalata", "Cipollotto", "Valeriana", "Cetrioli"];
-let bancoFrigo = ["Pizza", "Salumi", "Tortellini", "Spetzle", "Formaggi", "Yogurt", "Burro"];
-let bancoAperitivo = ["Amaro", "Patatine", "Vino"];
-let bancoCarne = ["Hamburger", "Pollo", "Griglia", "Macinato"];
-let bancoPasta = ["Pasta", "Scatolame", "Sottoaceti"];
-let bancoCondimenti = ["Pomodoro"];
-let bancoCereali = ["Biscotti", "Cereali", "Caffe"];
-let bancoPane = ["Toast", "Pane", "Cracker", "Taralli", "Uova", "Latte", "Panna"];
-let bancoDetersivi = ["Profuma Ambiente", "Carta Igienica", "Fazzoletti", "Scottex"];
-let bancoSurgelati = ["Funghi", "Pesce", "Patatine", "Gelato"];
-
-
-
-const ul = document.getElementById("rows");
-
-for(i=0; i<verdura.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = verdura[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
-/*
-    PROVARE A INSERIRE TITOLO ESPLICATIVO TIPO DI ARTICOLO
-
-    const l1 = document.querySelector(".l1");
-
-    const frigo = document.createElement("h3");
-    frigo.textContent = "Banco Frigo";
-    l1.appendChild(frigo)
- */
-
-for(i=0; i<bancoFrigo.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoFrigo[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
+const articoli =  {
+    verdura: ["Zucchine", "Peperoni", "Pomodori", "Porri", "Catalonia", "Cipolle", "Spinaci", "Cappuccio", "Insalata", "Cipollotto", "Valeriana", "Cetrioli"],
+    bancoFrigo: ["Pizza", "Salumi", "Tortellini", "Spetzle", "Formaggi", "Yogurt", "Burro"],
+    bancoAperitivo: ["Amaro", "Patatine", "Vino"],
+    bancoCarne: ["Hamburger", "Pollo", "Griglia", "Macinato"],
+    bancoPasta: ["Pasta", "Scatolame", "Sottoaceti"],
+    bancoCondimenti: ["Pomodoro"],
+    bancoCereali: ["Biscotti", "Cereali", "Caffe"],
+    bancoPane: ["Toast", "Pane", "Cracker", "Taralli", "Uova", "Latte", "Panna"],
+    bancoDetersivi: ["Profuma Ambiente", "Carta Igienica", "Fazzoletti", "Scottex"],
+    bancoSurgelati: ["Funghi", "Pesce", "Patatine Fritte", "Gelato"]
 }
 
-for(i=0; i<bancoAperitivo.length; i++){
 
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoAperitivo[i];
-    ul.appendChild(liTag);
+function generateArticlesRows() {
+    const ul = document.getElementById("rows");
 
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
+    /* READ FROM LOCALSTORAGE */
+    const cachedItems = localStorage.getItem('checkedItems');
+
+    for (const key in articoli){
+            const currentArray = articoli[key];
+
+            for(i=0; i<currentArray.length; i++){
+                const liTag = document.createElement("li");
+                const currentArticle = currentArray[i];
+                liTag.textContent = currentArticle;
+                ul.appendChild(liTag);
+            
+                const input = document.createElement("input");
+                input.type = "checkbox";
+                input.value = currentArticle;
+
+                if(cachedItems && cachedItems.includes(currentArticle)){
+                    input.checked = true;
+                }
+                
+                ul.appendChild(input);
+            }
+        }
 }
 
-for(i=0; i<bancoCarne.length; i++){
+function handleFormRequest() {
+    const form = document.getElementById("articles-form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const checkedCheckbox = form.querySelectorAll("input[type=checkbox]:checked");
+        let checkedItems = [];
+        for(i=0; i<checkedCheckbox.length; i++){
+            checkedItems.push(checkedCheckbox[i].value)
+        }
+        if(!checkedItems.length){
+            localStorage.setItem('checkedItems', [] )
+            return;
+        }
 
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoCarne[i];
-    ul.appendChild(liTag);
+        /* decidi come gestire l output */
+        alert(checkedItems.toString())
 
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
+        /* SAVE TO LOCALSTORAGE */
+        localStorage.setItem('checkedItems', checkedItems )
+    });
 }
 
-for(i=0; i<bancoPasta.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoPasta[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
-
-for(i=0; i<bancoCondimenti.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoCondimenti[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
-
-for(i=0; i<bancoCereali.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoCereali[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
-
-for(i=0; i<bancoPane.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoPane[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
-
-for(i=0; i<bancoDetersivi.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoDetersivi[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
-
-for(i=0; i<bancoSurgelati.length; i++){
-
-    const liTag = document.createElement("li");
-    liTag.textContent = bancoSurgelati[i];
-    ul.appendChild(liTag);
-
-    const check = document.createElement("input");
-    check.type = "checkbox";
-    ul.appendChild(check);
-}
+/* FUNCTION TRIGGER */
+generateArticlesRows();
+handleFormRequest();
